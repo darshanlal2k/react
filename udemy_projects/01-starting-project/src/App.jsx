@@ -4,8 +4,8 @@ import CoreConcept from './Components/CoreConcept/CoreConcept.jsx';
 import TabButton from './Components/TabButton/TabButton.jsx';
 
 function App() {
-  function handleSelect() {
-    console.log("Hello React Events from selected");
+  function handleSelect(selectedButton) {
+    console.log(selectedButton);
   }
   return (
     <div>
@@ -23,10 +23,10 @@ function App() {
         <section id="examples">
           <h2>Examples</h2>
           <menu>
-            <TabButton onSelect={handleSelect}>Components</TabButton>
-            <TabButton onSelect={handleSelect}>Jsx</TabButton>
-            <TabButton onSelect={handleSelect}>Props</TabButton>
-            <TabButton onSelect={handleSelect}>State</TabButton>
+            <TabButton onSelect={() => handleSelect('Components')}>Components</TabButton>
+            <TabButton onSelect={() => handleSelect('Jsx')}>Jsx</TabButton>
+            <TabButton onSelect={() => handleSelect('Props')}>Props</TabButton>
+            <TabButton onSelect={() => handleSelect('State')}>State</TabButton>
             {/* <TabButton label="Components" /> */}
           </menu>
           Dynamic Content
