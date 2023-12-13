@@ -3,8 +3,10 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { Country, State, City } from 'country-state-city';
-import { Grid, Button, Select, MenuItem, InputLabel, FormHelperText, TextareaAutosize, TextField, Container, FormControl } from '@mui/material';
+import { Grid, Button, Select, Typography, MenuItem, InputLabel, FormHelperText, TextareaAutosize, TextField, Container, FormControl } from '@mui/material';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required')
@@ -44,6 +46,7 @@ export default function HospitalDetails() {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
+
   useEffect(() => {
     const countriesData = Country.getAllCountries().map((country) => ({
       label: country.name,
@@ -51,6 +54,7 @@ export default function HospitalDetails() {
     }));
     setCountries(countriesData);
   }, []);
+
   const handleCountryChange = (event) => {
     console.log(event);
     const selectedCountry = event.target.value;
@@ -91,6 +95,7 @@ export default function HospitalDetails() {
       event.preventDefault(); // Prevents typing non-numeric characters
     }
   };
+
   const handleFileChange = (event) => {
     formik.setFieldValue('file', event.currentTarget.files[0]);
   };
@@ -107,18 +112,49 @@ export default function HospitalDetails() {
       file: null,
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
+      console.log('Form submitted:', values);
       try {
         console.log('Form submitted:', values);
+        toast.success('Form submitted successfully!', {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        const formData = new FormData();
+        formData.append('file', values.file); // Append the file to FormData
+        // delete values.file; // Remove the file from values object
+        console.log(formData);
+        // // Append other form fields to FormData
+        for (const key in values) {
+          if (key !== 'file') {
+            formData.append(key, values[key]);
+          }
+        }
+        console.log(formData);
+        // console.log(values);
+        const response = await axios.post('http://localhost:5000/hospitaldetails', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log(response.data);
+        resetForm(); // If successful, log the response from the server
       } catch (error) {
         console.error('Error submitting form:', error);
       }
-      // console.log('Form submitted:', values);
     }
   })
   return (
-    <Container>
-      <h3>Hospital Details</h3>
+
+    <Container p={2}>
+      <ToastContainer />
+      <Typography variant="h5" component="h2" sx={{
+        textAlign: "center",
+        color: 'blue',
+        fontWeight: 600,
+      }}>
+        Hospital Details
+      </Typography>
+
       <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2} m={1}>
           <Grid item xs={12} xl={6}>
@@ -169,6 +205,30 @@ export default function HospitalDetails() {
               {/* {formik.touched.shortname && formik.errors.shortname && (
                 <div style={{ color: 'red' }}>{formik.errors.shortname}</div>
               )} */}
+            </FormControl>
+          </Grid>
+          {/* File Upload */}
+          <Grid item xs={12} xl={6}>
+            <FormControl fullWidth>
+              <Button
+                variant="outlined"
+                component="label"
+                size='large'
+                sx={{ pt: 2, pb: 1.5, textAlign: 'center' }}
+                startIcon={<FileUploadOutlinedIcon />}
+              >
+                Upload Hospital Logo
+                <input
+                  type="file"
+                  name='file'
+                  styles={{ display: "none" }}
+                  hidden
+                  onChange={handleFileChange}
+                />
+              </Button>
+              {formik.touched.file && formik.errors.file && (
+                <div style={{ color: 'red' }}>{formik.errors.file}</div>
+              )}
             </FormControl>
           </Grid>
           {/* Email*/}
@@ -285,6 +345,12 @@ export default function HospitalDetails() {
                 value={formik.values.pincode}
                 onChange={formik.handleChange}
                 onKeyDown={handlePincodeKeyDown}
+                onKeyPress={(e) => {
+                  // Prevent typing after reaching 6 characters
+                  if (formik.values.pincode.length >= 6) {
+                    e.preventDefault();
+                  }
+                }}
                 error={formik.touched.pincode && Boolean(formik.errors.pincode)}
               // helperText={(formik.touched.pincode && formik.errors.pincode) || ' '}
               />
@@ -293,30 +359,7 @@ export default function HospitalDetails() {
               )}
             </FormControl>
           </Grid>
-          {/* File Upload */}
-          <Grid item xs={12} xl={6}>
-            <FormControl fullWidth>
-              <Button
-                variant="outlined"
-                component="label"
-                size='large'
-                sx={{ pt: 2, pb: 1.5, textAlign: 'center' }}
-                startIcon={<FileUploadOutlinedIcon />}
-              >
-                Upload Hospital Logo
-                <input
-                  type="file"
-                  name='file'
-                  styles={{ display: "none" }}
-                  hidden
-                  onChange={handleFileChange}
-                />
-              </Button>
-              {formik.touched.file && formik.errors.file && (
-                <div style={{ color: 'red' }}>{formik.errors.file}</div>
-              )}
-            </FormControl>
-          </Grid>
+
           <Grid item xs={12}>
             <Button variant="contained" color="primary" type="submit">
               Submit

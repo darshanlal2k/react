@@ -5,7 +5,6 @@ import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
 
 
-
 export default function GridTable() {
 
     const [data, setdata] = useState([]);
@@ -15,7 +14,7 @@ export default function GridTable() {
             try {
                 const response = await axios.get('http://localhost:5000');
                 setdata(response.data);
-                // console.log(response.data);
+                console.log(response.data);
             }
             catch (error) {
                 console.error('error:', error);
