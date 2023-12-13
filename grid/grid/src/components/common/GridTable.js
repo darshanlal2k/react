@@ -15,6 +15,7 @@ export default function GridTable() {
                 const response = await axios.get('http://localhost:5000');
                 setdata(response.data);
                 console.log(response.data);
+                console.log(response.data);
             }
             catch (error) {
                 console.error('error:', error);
@@ -45,11 +46,22 @@ export default function GridTable() {
                                 <TableRow key={row.id}>
                                     <TableCell>{row.id}</TableCell>
                                     <TableCell>{row.name}</TableCell>
+                                    <TableCell>{row.shortname}</TableCell>
                                     <TableCell>{row.email}</TableCell>
-                                    <TableCell>{row.companyname}</TableCell>
-                                    <TableCell>{row.contact}</TableCell>
                                     <TableCell>{row.address}</TableCell>
-                                    <TableCell>{row.countryname}</TableCell>
+                                    <TableCell>{row.country}</TableCell>
+                                    <TableCell>{row.state}</TableCell>
+                                    <TableCell>{row.city}</TableCell>
+                                    <TableCell>{row.pincode}</TableCell>
+
+                                    <TableCell>
+                                        {row.file && (
+                                            <img src={`http://localhost:5000/images/${row.file}`} alt='Hospital Logo' width={100} height={100} />
+                                        )}
+                                    </TableCell>
+
+
+
                                 </TableRow>
                             ))}
                         </TableBody>
