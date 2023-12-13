@@ -2,6 +2,8 @@ import { Box, Button, Container, Table, TableBody, TableCell, TableContainer, Ta
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Paper from '@mui/material/Paper';
+import { Link } from 'react-router-dom';
+
 
 
 export default function GridTable() {
@@ -25,7 +27,7 @@ export default function GridTable() {
         <Box>
             <div className='align-right'>
                 <Container>
-                    <Button >Add</Button>
+                    <Link to="/hospitaldetails"><Button >Add</Button></Link>
                 </Container>
             </div>
 
