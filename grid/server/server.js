@@ -1,6 +1,7 @@
 const express = require('express');
 var connection = require('./db');
 const bodyParser = require('body-parser');
+const path = require('path');
 const app = express();
 const PORT = 5000;
 app.use(bodyParser.json());
@@ -8,35 +9,20 @@ const cors = require('cors');
 
 const multer = require('multer');
 app.use(cors());
-
+// app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
+app.use(express.static('public'));
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        return cb(null, "./public/images")
+        // return cb(null, "./public/images")
+        cb(null, path.join(__dirname, "public", "images"));
     },
     filename: function (req, file, cb) {
         return cb(null, `${Date.now()}_${file.originalname}`)
     }
 })
 
-const upload = multer({ storage })
+const upload = multer({ storage: storage })
 
-app.get("/", (req, res) => {
-    console.log(req.body);
-    console.log("from get");
-    // res.send("From server");
-    var sql = 'select * from hospitaldetails';
-    connection.query(sql, (err, result) => {
-        if (!err) {
-            console.log("hello");
-            res.send(result.rows);
-            console.log(result.rows);
-        }
-        else {
-            console.log(err);
-        }
-    });
-
-});
 app.post("/hospitaldetails", upload.single('file'), (req, res) => {
     console.log("inside post");
     console.log(req.body);
@@ -53,7 +39,7 @@ app.post("/hospitaldetails", upload.single('file'), (req, res) => {
         req.body.state,
         req.body.city,
         req.body.pincode,
-        req.file.path,
+        req.file.filename,
     ]
     connection.query(sql, values, (err, result) => {
         console.log("inside query");
@@ -73,6 +59,23 @@ app.post("/hospitaldetails", upload.single('file'), (req, res) => {
         // })
         // return res.json({ Status: "Success", data: result })
     })
+
+});
+app.get("/", (req, res) => {
+    console.log(req.body);
+    console.log("from get");
+    // res.send("From server");
+    var sql = 'select * from hospitaldetails';
+    connection.query(sql, (err, result) => {
+        if (!err) {
+            console.log("hello");
+            res.send(result.rows);
+            console.log(result.rows);
+        }
+        else {
+            console.log(err);
+        }
+    });
 
 });
 
