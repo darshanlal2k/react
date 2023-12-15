@@ -65,7 +65,7 @@ app.get("/", (req, res) => {
     console.log(req.body);
     console.log("from get");
     // res.send("From server");
-    var sql = 'select * from hospitaldetails';
+    var sql = 'select * from hospitaldetails order by id asc';
     connection.query(sql, (err, result) => {
         if (!err) {
             console.log("hello");
@@ -76,12 +76,49 @@ app.get("/", (req, res) => {
             console.log(err);
         }
     });
-
 });
 
+// app.put('/editdetails/:id', async (req, res) => {
+//     console.log(req.body);
+//     const { id } = req.params;
+//     const { name, shortname, email, address, country, state, city, pincode } = req.body;
+//     try {
+//         const updateHospital = await pool.query(
+//             'UPDATE hospitaldetails SET name=$1, shortname=$2, email=$3, address=$4, country=$5, state=$6, city=$7, pincode=$8 WHERE id=$9',
+//             [name, shortname, email, address, country, state, city, pincode, id]
+//         );
+//         res.json({ message: 'Hospital updated' });
+//     } catch (err) {
+//         console.error(err.message);
+//         res.status(500).json({ message: 'Server Error' });
+//     }
+// });
+app.put('/editdetails/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, shortname, email, address, country, state, city, pincode } = req.body;
+    try {
+      connection.query(
+        'UPDATE hospitaldetails SET name=$1, shortname=$2, email=$3, address=$4, country=$5, state=$6, city=$7, pincode=$8 WHERE id=$9',
+        [name, shortname, email, address, country, state, city, pincode, id],
+        (err, result) => {
+          if (err) {
+            console.error(err);
+            res.status(500).json({ message: 'Server Error' });
+            return;
+          }
+          res.json({ message: 'Hospital updated' });
+        }
+      );
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  });
 
-
-
+// app.put('/editdetails/:id', (req, res) => {
+//     console.log(req.body);
+//     var sql = 'UPDATE hospitaldetails ';
+// })
 // app.post("/api", (req, res) => {
 //     console.log("from post");
 //     const dataReceived = req.body;
