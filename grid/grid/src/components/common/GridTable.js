@@ -1,10 +1,10 @@
-import { Box, Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Box, Button, Container, Table, TableBody, IconButton, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
-
-
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 export default function GridTable() {
 
     const [data, setdata] = useState([]);
@@ -23,6 +23,11 @@ export default function GridTable() {
         }
         fetchdata();
     }, []);
+    const navigate = useNavigate();
+
+    const handleEditClick = (row) => {
+        navigate(`/editdetails?id=${row.id}`, { state: { rowData: row } });
+    };
     return (
         <Box>
             <div className='align-right'>
@@ -36,9 +41,21 @@ export default function GridTable() {
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                {data.length > 0 && Object.keys(data[0]).map(key => (
+                                {/* {data.length > 0 && Object.keys(data[0]).map(key => (
                                     <TableCell key={key}>{key}</TableCell>
-                                ))}
+                                ))} */}
+                                <TableCell>ID</TableCell>
+                                <TableCell>Hospital Name</TableCell>
+                                <TableCell>Hospital Short Name</TableCell>
+                                <TableCell>Hospital Email</TableCell>
+                                <TableCell>Hospital Address</TableCell>
+                                <TableCell>Country</TableCell>
+                                <TableCell>State</TableCell>
+                                <TableCell>City</TableCell>
+                                <TableCell>Pin Code</TableCell>
+                                <TableCell>Hospital Logo</TableCell>
+                                <TableCell>Edit</TableCell>
+
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -59,9 +76,25 @@ export default function GridTable() {
                                             <img src={`http://localhost:5000/images/${row.file}`} alt='Hospital Logo' width={100} height={100} />
                                         )}
                                     </TableCell>
-
-
-
+                                    {/* <TableCell>
+                                        <Link to={{ pathname: "/editdetails", state: { rowData: row } }} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                            <ModeEditOutlineIcon />
+                                        </Link>
+                                    </TableCell> */}
+                                    {/* <TableCell>
+                                        <RouterLink
+                                            to={`/editdetails?id=${row.id}`}
+                                            state={{ rowData: row }}
+                                            style={{ textDecoration: 'none', color: 'inherit' }}
+                                        >
+                                            <ModeEditOutlineIcon />
+                                        </RouterLink>
+                                    </TableCell> */}
+                                    <TableCell>
+                                        <IconButton onClick={() => handleEditClick(row)}>
+                                            <ModeEditOutlineIcon />
+                                        </IconButton>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

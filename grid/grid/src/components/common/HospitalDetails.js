@@ -3,10 +3,11 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { Country, State, City } from 'country-state-city';
-import { Grid, Button, Select, Typography, MenuItem, InputLabel, FormHelperText, TextareaAutosize, TextField, Container, FormControl } from '@mui/material';
+import { Grid, Link, Button, Select, Typography, MenuItem, InputLabel, TextareaAutosize, TextField, Container, FormControl } from '@mui/material';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate   } from 'react-router-dom';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required')
@@ -42,7 +43,7 @@ const validationSchema = Yup.object().shape({
 
 
 
-export default function HospitalDetails() {
+export default function HospitalDetails(props) {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -99,6 +100,7 @@ export default function HospitalDetails() {
   const handleFileChange = (event) => {
     formik.setFieldValue('file', event.currentTarget.files[0]);
   };
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -137,7 +139,8 @@ export default function HospitalDetails() {
           },
         });
         console.log(response.data);
-        resetForm(); // If successful, log the response from the server
+        resetForm();
+        navigate('/gridtable'); // If successful, log the response from the server
       } catch (error) {
         console.error('Error submitting form:', error);
       }
@@ -359,11 +362,13 @@ export default function HospitalDetails() {
               )}
             </FormControl>
           </Grid>
-
           <Grid item xs={12}>
-            <Button variant="contained" color="primary" type="submit">
-              Submit
-            </Button>
+
+            {/* <Link to="/gridtable" style={{ textDecoration: 'none', color: 'inherit' }}> */}
+              <Button variant="contained" color="primary" type="submit">Submit
+              </Button>
+            {/* </Link> */}
+
           </Grid>
         </Grid>
       </form>
