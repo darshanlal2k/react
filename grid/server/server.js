@@ -8,6 +8,7 @@ app.use(bodyParser.json());
 const cors = require('cors');
 
 const multer = require('multer');
+const { log } = require('console');
 app.use(cors());
 // app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
 app.use(express.static('public'));
@@ -114,7 +115,19 @@ app.put('/editdetails/:id', async (req, res) => {
       res.status(500).json({ message: 'Server Error' });
     }
   });
-
+  app.delete('/deletehospital/:id', (req, res) => {
+    console.log(req.body);
+    const { id } = req.params;
+    const sql = 'DELETE FROM hospitaldetails WHERE id = $1';
+    connection.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ message: 'Server Error' });
+            return;
+        }
+        res.json({ message: 'Hospital deleted' });
+    });
+});
 // app.put('/editdetails/:id', (req, res) => {
 //     console.log(req.body);
 //     var sql = 'UPDATE hospitaldetails ';
