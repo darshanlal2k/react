@@ -7,10 +7,14 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { Country, State, City } from 'country-state-city';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 export default function EditDetails() {
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
+    
     const location = useLocation();
     const { rowData } = location.state || {};
 
@@ -19,7 +23,8 @@ export default function EditDetails() {
     const [countries, setCountries] = useState([]);
     const [states, setStates] = useState([]);
     const [cities, setCities] = useState([]);
-
+    
+    
     useEffect(() => {
         const countriesData = Country.getAllCountries().map((country) => ({
             label: country.name,
@@ -131,6 +136,7 @@ export default function EditDetails() {
             event.preventDefault(); // Prevents typing non-numeric characters
         }
     };
+    const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             name: rowData ? rowData.name : '',
@@ -150,9 +156,15 @@ export default function EditDetails() {
             setIsSubmitting(true);
             try {
                 console.log(values);
+                toast.success('Form updated successfully!', {
+                    position: toast.POSITION.TOP_CENTER,
+                    onClose: () => navigate('/gridtable') 
+                  });
                 // Perform PUT request using Axios to update data in the database
                 const response = await axios.put(`http://localhost:5000/editdetails/${rowData.id}`, values);
                 console.log('Updated data:', response.data);
+                
+                // navigate('/gridtable');
                 // Handle success scenario, e.g., show success message, navigate, etc.
             } catch (error) {
                 console.error('Update failed:', error);
@@ -204,6 +216,7 @@ export default function EditDetails() {
         //     {/* Your edit form or components go here */}
         // </div>
         <Container>
+             <ToastContainer />
             <h2>Edit Hospital Details</h2>
             <form onSubmit={formik.handleSubmit}>
                 <Grid container spacing={2} m={1}>
