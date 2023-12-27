@@ -35,48 +35,6 @@ export default function GridTable() {
 
         return () => clearInterval(interval);
     }, [isAutoSyncOn]);
-    // const fetchData = async () => {
-    //     try {
-    //         const response = await axios.get('http://localhost:5000');
-    //         setdata(response.data);
-    //         console.log(response.data);
-    //     } catch (error) {
-    //         console.error('error:', error);
-    //     }
-    // };
-    // useEffect(() => {
-    //     const fetchdata = async () => {
-    //         try {
-    //             const response = await axios.get('http://localhost:5000');
-    //             setdata(response.data);
-    //             console.log(response.data);
-    //             console.log(response.data);
-    //         }
-    //         catch (error) {
-    //             console.error('error:', error);
-    //         }
-    //     }
-           
-    //     // Start Auto Sync on component mount    
-    //     const interval = setInterval(() => {
-    //         if (isAutoSyncOn) {
-    //             fetchdata();
-    //         }
-    //     }, 30000); // Every 2 minutes
-    //     return () => clearInterval(interval);
-        
-    // }, []);
-
-   
-        // Start Auto Sync on component mount    
-    //     const interval = setInterval(() => {
-    //         if (isAutoSyncOn) {
-                
-    //         }
-    //     }, 120000); // Every 2 minutes
-    //     return () => clearInterval(interval);
-    
-    
 
     const navigate = useNavigate();
 
@@ -87,16 +45,13 @@ export default function GridTable() {
         try {
             const response = await axios.delete(`http://localhost:5000/deletehospital/${row.id}`);
             if (response.status === 200) {
-                // If deletion is successful, you might want to update the UI or refetch the data
                 setdata(prevData => prevData.filter(item => item.id !== row.id));
             } else {
-                // Handle other cases, e.g., deletion failed
                 console.error('Failed to delete');
             }
         }
         catch (error) {
             console.error('Error deleting:', error);
-            // Handle error cases here
         }
     }
     return (
@@ -110,10 +65,11 @@ export default function GridTable() {
             </Grid>
             <Hidden mdUp>
                 {data.map((row) => (
-                    <Grid key={row.id} container spacing={2}>
+                    <Grid key={row.id} container spacing={2} p={1}>
                         <Grid item xs={6}>
-                            {/* Display labels */}
-                            <div>ID</div>
+                           
+                           
+                            <div className='' >ID</div>
                             <div>Hospital Name</div>
                             <div>Hospital Short Name</div>
                             <div>Hospital Email</div>
@@ -125,12 +81,11 @@ export default function GridTable() {
                             <div>Hospital Logo</div>
                             <div>Edit</div>
                             <div>Delete</div>
-                            {/* ... other columns */}
+                           
                         </Grid>
                         <Grid item xs={6}>
                             {/* Display corresponding data */}
-                            {/* <div>{row.id}</div>
-                                <div>{row.name}</div> */}
+                                                       
                             <div>{row.id}</div>
                             <div>{row.name}</div>
                             <div>{row.shortname}</div>
@@ -186,7 +141,6 @@ export default function GridTable() {
                                     {data.map((row) => (
                                         <TableRow key={row.id}>
                                             {/* ... table cells ... */}
-
                                             <TableCell>{row.id}</TableCell>
                                             <TableCell>{row.name}</TableCell>
                                             <TableCell>{row.shortname}</TableCell>
