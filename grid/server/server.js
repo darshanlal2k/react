@@ -46,19 +46,12 @@ app.post("/hospitaldetails", upload.single('file'), (req, res) => {
         console.log("inside query");
         if (!err) {
             res.json({ Status: "Success " })
-            // console.log("hello");
-            // res.send(result.rows);
-            // console.log(result.rows);
         }
         else {
             res.json({
                 Error: "error signup query"
             })
         }
-        // if (err) return res.json({
-        //     Error: "error signup query"
-        // })
-        // return res.json({ Status: "Success", data: result })
     })
 
 });
@@ -78,22 +71,6 @@ app.get("/", (req, res) => {
         }
     });
 });
-
-// app.put('/editdetails/:id', async (req, res) => {
-//     console.log(req.body);
-//     const { id } = req.params;
-//     const { name, shortname, email, address, country, state, city, pincode } = req.body;
-//     try {
-//         const updateHospital = await pool.query(
-//             'UPDATE hospitaldetails SET name=$1, shortname=$2, email=$3, address=$4, country=$5, state=$6, city=$7, pincode=$8 WHERE id=$9',
-//             [name, shortname, email, address, country, state, city, pincode, id]
-//         );
-//         res.json({ message: 'Hospital updated' });
-//     } catch (err) {
-//         console.error(err.message);
-//         res.status(500).json({ message: 'Server Error' });
-//     }
-// });
 app.put('/editdetails/:id', async (req, res) => {
     const { id } = req.params;
     const { name, shortname, email, address, country, state, city, pincode } = req.body;
@@ -128,36 +105,6 @@ app.put('/editdetails/:id', async (req, res) => {
         res.json({ message: 'Hospital deleted' });
     });
 });
-// app.put('/editdetails/:id', (req, res) => {
-//     console.log(req.body);
-//     var sql = 'UPDATE hospitaldetails ';
-// })
-// app.post("/api", (req, res) => {
-//     console.log("from post");
-//     const dataReceived = req.body;
-//     console.log(dataReceived);
-//     console.log("from post");
-//     var sql = "insert into users(name, email, companyname, contact, address, countryname) values ($1, $2, $3, $4, $5, $6)";
-//     var values = [
-//         dataReceived.name,
-//         dataReceived.email,
-//         dataReceived.companyname,
-//         dataReceived.contact,
-//         dataReceived.address,
-//         dataReceived.countryname,
-//     ];
-//     connection.query(sql, values, (err, result) => {
-//         if (!err) {
-//             console.log("hello");
-//             res.send(result.rows);
-//             console.log(result.rows);
-//         }
-//         else {
-//             console.log(err);
-//         }
-//     });
-// });
-
 app.listen(PORT, () => {
     console.log("port started at 5000");
 });
