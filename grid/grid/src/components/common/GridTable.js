@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-
+// import './GridTable.css';
 
 export default function GridTable() {
 
@@ -55,124 +55,139 @@ export default function GridTable() {
         }
     }
     return (
-        <Container maxWidth="xl" sx={{ p: 1,  }}>
-            <Grid container sx={{ mt: 2 }} justifyContent="flex-end">
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
-                    <Link to="/hospitaldetails" style={{ textDecoration: 'none' }}>
-                        <Button variant="contained" fullWidth>Add</Button>
-                    </Link>
-                </Grid>
-            </Grid>
-            <Hidden mdUp>
-                {data.map((row) => (
-                    <Grid key={row.id} container spacing={2} p={1}>
-                        <Grid item xs={6}>
-                           
-                           
-                            <div className='' >ID</div>
-                            <div>Hospital Name</div>
-                            <div>Hospital Short Name</div>
-                            <div>Hospital Email</div>
-                            <div>Hospital Address</div>
-                            <div>Country</div>
-                            <div>State</div>
-                            <div>City</div>
-                            <div>Pin Code</div>
-                            <div>Hospital Logo</div>
-                            <div>Edit</div>
-                            <div>Delete</div>
-                           
-                        </Grid>
-                        <Grid item xs={6}>
-                            {/* Display corresponding data */}
-                                                       
-                            <div>{row.id}</div>
-                            <div>{row.name}</div>
-                            <div>{row.shortname}</div>
-                            <div>{row.email}</div>
-                            <div>{row.address}</div>
-                            <div>{row.country}</div>
-                            <div>{row.state}</div>
-                            <div>{row.city}</div>
-                            <div>{row.pincode}</div>
-                            <div>
-                                {row.file && (
-                                    <img src={`http://localhost:5000/images/${row.file}`} alt='Hospital Logo' width={100} height={100} />
-                                )}
-                            </div>
-                            <div>
-                                <IconButton onClick={() => handleEditClick(row)}>
-                                    <ModeEditOutlineIcon />
-                                </IconButton>
-                            </div>
-                            <div>
-                                <IconButton onClick={() => handleDeleteClick(row)}>
-                                    <DeleteIcon />
-                                </IconButton>
-                            </div>
-                            {/* ... other columns */}
-                        </Grid>
+        <Container maxWidth="xl" className='p-5'>
+            <Box className="text-center m-5">
+                <Link to="/hospitaldetails" style={{ textDecoration: 'none' }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        type='submit'
+                    >
+                        Add Hospital
+                    </Button>
+                </Link>
+            </Box>
+            <Box className="hidden md:block">
+                <Table className=''>
+                    <TableHead className='border border-red-700'>
+                        <TableRow className=''>
+                            <TableCell>ID</TableCell>
+                            <TableCell>Hospital Name</TableCell>
+                            <TableCell>Hospital Short Name</TableCell>
+                            <TableCell>Hospital Email</TableCell>
+                            <TableCell>Hospital Address</TableCell>
+                            <TableCell>Country</TableCell>
+                            <TableCell>State</TableCell>
+                            <TableCell>City</TableCell>
+                            <TableCell>Pin Code</TableCell>
+                            <TableCell>Hospital Logo</TableCell>
+                            <TableCell>Edit</TableCell>
+                            <TableCell>Delete</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data.map((row) => (
+                            <TableRow  className='border border-red-700' key={row.id}>
+                                <TableCell>{row.id}</TableCell>
+                                <TableCell>{row.name}</TableCell>
+                                <TableCell>{row.shortname}</TableCell>
+                                <TableCell>{row.email}</TableCell>
+                                <TableCell>{row.address}</TableCell>
+                                <TableCell>{row.country}</TableCell>
+                                <TableCell>{row.state}</TableCell>
+                                <TableCell>{row.city}</TableCell>
+                                <TableCell>{row.pincode}</TableCell>
+                                <TableCell>
+                                    {row.file && (
+                                        <img src={`http://localhost:5000/images/${row.file}`} alt='Hospital Logo' width={100} height={100} />
+                                    )}
+                                </TableCell>
+                                <TableCell>
+                                    <IconButton onClick={() => handleEditClick(row)}>
+                                        <ModeEditOutlineIcon />
+                                    </IconButton>
+                                </TableCell>
+                                <TableCell>
+                                    <IconButton onClick={() => handleDeleteClick(row)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </Box>
+            <Box className='md:hidden'>
+                <Grid container >
+                    <Grid item xs={12} md={12}>
+                        {data.map((row) => (
+                            <Paper key={row.id} variant="outlined" sx={{ p: 2, mb: 2 }}>
+                                <div className='flex bg-sky-300 text-center'>
+                                    <strong className='w-1/2'>ID</strong>
+                                    <span className='w-1/2'>{row.id}</span>
+                                </div>
+                                <div className='flex '>
+                                    <strong className='w-1/2'>Hospital Name</strong>
+                                    <span className='w-1/2'>{row.name}</span>
+                                </div>
+                                <div className='flex '>
+                                    <strong className='w-1/2'>Hospital Short Name</strong>
+                                    <span className='w-1/2'>{row.shortname}</span>
+                                </div>
+                                <div className='flex '>
+                                    <strong className='w-1/2'>Hospital Email</strong>
+                                    <span className='w-1/2'>{row.email}</span>
+                                </div>
+                                <div className='flex '>
+                                    <strong className='w-1/2'>Hospital Address</strong>
+                                    <span className='w-1/2'>{row.address}</span>
+                                </div>
+                                <div className='flex '>
+                                    <strong className='w-1/2'>Country</strong>
+                                    <span className='w-1/2'>{row.country}</span>
+                                </div>
+                                <div className='flex '>
+                                    <strong className='w-1/2'>State</strong>
+                                    <span className='w-1/2'>{row.state}</span>
+                                </div>
+                                <div className='flex '>
+                                    <strong className='w-1/2'>City</strong>
+                                    <span className='w-1/2'>{row.city}</span>
+                                </div>
+                                <div className='flex '>
+                                    <strong className='w-1/2'>Pin Code</strong>
+                                    <span className='w-1/2'>{row.pincode}</span>
+                                </div>
+                                <div className='flex '>
+                                    <strong className='w-1/2'>Hospital Logo</strong>
+                                    <span className='w-1/2'>
+                                        {row.file && (
+                                            <img src={`http://localhost:5000/images/${row.file}`} alt='Hospital Logo' width={100} height={100} />
+                                        )}
+                                    </span>
+                                </div>
+                                <div className='flex '>
+                                    <strong className='w-1/2 '>Edit</strong>
+                                    <span className='w-1/2'>
+                                        <IconButton onClick={() => handleEditClick(row)}>
+                                            <ModeEditOutlineIcon />
+                                        </IconButton>
+                                    </span>
+                                </div>
+                                <div className='flex '>
+                                    <strong className='w-1/2 '>Delete</strong>
+                                    <span className='w-1/2'>
+                                        <IconButton onClick={() => handleDeleteClick(row)}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </span>
+                                </div>
+                            </Paper>
+                        ))}
                     </Grid>
-                ))}
-            </Hidden>
-            <Hidden smDown md={false}>
-                <Grid container sx={{ mt: 2 }}>
-                    <Grid item xs={12} xl={12}>
-                        <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
-                            <Table aria-label="simple table" >
-                                <TableHead>
-                                    <TableRow>
-                                        {/* ... table headers ... */}
-                                        <TableCell>ID</TableCell>
-                                        <TableCell>Hospital Name</TableCell>
-                                        <TableCell>Hospital Short Name</TableCell>
-                                        <TableCell>Hospital Email</TableCell>
-                                        <TableCell>Hospital Address</TableCell>
-                                        <TableCell>Country</TableCell>
-                                        <TableCell>State</TableCell>
-                                        <TableCell>City</TableCell>
-                                        <TableCell>Pin Code</TableCell>
-                                        <TableCell>Hospital Logo</TableCell>
-                                        <TableCell>Edit</TableCell>
-                                        <TableCell>Delete</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {data.map((row) => (
-                                        <TableRow key={row.id}>
-                                            {/* ... table cells ... */}
-                                            <TableCell>{row.id}</TableCell>
-                                            <TableCell>{row.name}</TableCell>
-                                            <TableCell>{row.shortname}</TableCell>
-                                            <TableCell>{row.email}</TableCell>
-                                            <TableCell>{row.address}</TableCell>
-                                            <TableCell>{row.country}</TableCell>
-                                            <TableCell>{row.state}</TableCell>
-                                            <TableCell>{row.city}</TableCell>
-                                            <TableCell>{row.pincode}</TableCell>
-                                            <TableCell>
-                                                {row.file && (
-                                                    <img src={`http://localhost:5000/images/${row.file}`} alt='Hospital Logo' width={100} height={100} />
-                                                )}
-                                            </TableCell>
-                                            <TableCell>
-                                                <IconButton onClick={() => handleEditClick(row)}>
-                                                    <ModeEditOutlineIcon />
-                                                </IconButton>
-                                            </TableCell>
-                                            <TableCell>
-                                                <IconButton onClick={() => handleDeleteClick(row)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Grid>
                 </Grid>
-            </Hidden>
+            </Box>
             <Box>
                 <Container maxWidth={"xl"} sx={{ mt: 5, mb: 5 }}>
                     <Grid container justifyContent={'space-evenly'}>
@@ -185,14 +200,6 @@ export default function GridTable() {
                     </Grid>
                 </Container>
             </Box>
-               {/* Example to show whether Auto Sync is On or Off */}
-        {/* <Box>
-            {isAutoSyncOn ? (
-                <p>Auto Sync is currently On</p>
-            ) : (
-                <p>Auto Sync is currently Off</p>
-            )}
-        </Box> */}
         </Container>
     );
 }
