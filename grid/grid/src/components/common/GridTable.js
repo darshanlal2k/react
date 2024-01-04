@@ -1,29 +1,32 @@
-import { Box, Grid, Button, Container, Hidden, Table, TableBody, IconButton, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+// import material ui axios react-router-dom
+import { Box, Grid, Button, Container, Table, TableBody, IconButton, TableCell, TableHead, TableRow } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Paper from '@mui/material/Paper';
-import { Link } from 'react-router-dom';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-// import './GridTable.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function GridTable() {
 
-    const [data, setdata] = useState([]);
-    const [isAutoSyncOn, setIsAutoSyncOn] = useState(false);
+    const [data, setdata] = useState([]); // data receives from backend - Darshan
+    const [isAutoSyncOn, setIsAutoSyncOn] = useState(false); // used for reload - Darshan
+
+    // fetch data from backend using get methods - Darshan 
     const fetchData = async () => {
         try {
             const response = await axios.get('http://localhost:5000');
-            setdata(response.data);
+            setdata(response.data); // parameter , which data passes to set data function we can access using (data) - Darshan
             console.log(response.data);
         } catch (error) {
             console.error('error:', error);
         }
     };
-
+    // useEffect -> our component needs to do something after render
     useEffect(() => {
         fetchData();
+        
+        // used to fetch and sync data or reload 
         const fetchAndSyncData = async () => {
             if (isAutoSyncOn) {
                 console.log("sync is on");
@@ -31,16 +34,19 @@ export default function GridTable() {
             }
         };
 
-        const interval = setInterval(fetchAndSyncData, 30000); // Every 2 minutes for ( 30secs -> 30000)
+        const interval = setInterval(fetchAndSyncData, 30000); // Every 30 seconds it will refresh the page  for ( 30secs -> 30000) - Darshan
 
         return () => clearInterval(interval);
     }, [isAutoSyncOn]);
 
     const navigate = useNavigate();
 
+    // its edit and  navigateing to editdetails.js file - Darshan
     const handleEditClick = (row) => {
         navigate(`/editdetails?id=${row.id}`, { state: { rowData: row } });
     };
+
+    // its will delete the row  - Darshan
     const handleDeleteClick = async (row) => {
         try {
             const response = await axios.delete(`http://localhost:5000/deletehospital/${row.id}`);
@@ -56,6 +62,7 @@ export default function GridTable() {
     }
     return (
         <Container maxWidth="xl" className='p-5'>
+             {/* Add Hospital button  - Darshan */}
             <Box className="text-center m-5">
                 <Link to="/hospitaldetails" style={{ textDecoration: 'none' }}>
                     <Button
@@ -68,10 +75,11 @@ export default function GridTable() {
                     </Button>
                 </Link>
             </Box>
+            {/* Table  md,lg,xl,2xl will display  - Darshan*/}
             <Box className="hidden md:block">
-                <Table className=''>
+                <Table>
                     <TableHead className='border border-red-700'>
-                        <TableRow className=''>
+                        <TableRow >
                             <TableCell>ID</TableCell>
                             <TableCell>Hospital Name</TableCell>
                             <TableCell>Hospital Short Name</TableCell>
@@ -88,7 +96,7 @@ export default function GridTable() {
                     </TableHead>
                     <TableBody>
                         {data.map((row) => (
-                            <TableRow  className='border border-red-700' key={row.id}>
+                            <TableRow className='border border-red-700' key={row.id}>
                                 <TableCell>{row.id}</TableCell>
                                 <TableCell>{row.name}</TableCell>
                                 <TableCell>{row.shortname}</TableCell>
@@ -118,6 +126,7 @@ export default function GridTable() {
                     </TableBody>
                 </Table>
             </Box>
+            {/* Table only show in sm mobile only  - Darshan */}
             <Box className='md:hidden'>
                 <Grid container >
                     <Grid item xs={12} md={12}>
@@ -188,6 +197,7 @@ export default function GridTable() {
                     </Grid>
                 </Grid>
             </Box>
+            {/* sync button is used to on and off of interval timing  - Darshan */}
             <Box>
                 <Container maxWidth={"xl"} sx={{ mt: 5, mb: 5 }}>
                     <Grid container justifyContent={'space-evenly'}>

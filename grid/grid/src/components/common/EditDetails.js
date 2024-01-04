@@ -1,7 +1,8 @@
-import React from 'react';
-import { useSearchParams, useLocation } from 'react-router-dom';
-import { Grid, Link, Button, Select, Typography, MenuItem, InputLabel, TextareaAutosize, TextField, Container, FormControl } from '@mui/material';
-import { useState, useEffect } from 'react';
+// import react, react-router, material ui, formik,yup,axios, country-state-city, file upload , react -toastify
+
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Button, Select, InputLabel, MenuItem, TextField, FormControl } from '@mui/material';
+import { useState, useEffect, React } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -9,11 +10,10 @@ import { Country, State, City } from 'country-state-city';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+
 
 export default function EditDetails() {
-    const [searchParams] = useSearchParams();
-    const id = searchParams.get('id');
+
 
     const location = useLocation();
     const { rowData } = location.state || {};
@@ -24,7 +24,7 @@ export default function EditDetails() {
     const [states, setStates] = useState([]);
     const [cities, setCities] = useState([]);
 
-
+    // to fetch all countries list
     useEffect(() => {
         const countriesData = Country.getAllCountries().map((country) => ({
             label: country.name,
@@ -55,11 +55,11 @@ export default function EditDetails() {
             formik.setFieldValue('city', rowData.city);
         }
     }, [rowData]); // Trigger effect when rowData changes
-
+    // on change in country changes by user
     const handleCountryChange = (event) => {
-        console.log(event);
+        // console.log(event);
         const selectedCountry = event.target.value;
-        console.log(selectedCountry);
+        // console.log(selectedCountry);
         formik.setFieldValue('country', selectedCountry);
 
         // Fetch and set states based on selected country
@@ -67,35 +67,34 @@ export default function EditDetails() {
             label: state.name,
             value: state.isoCode,
         }));
-        console.log(fetchedStates);
+        // console.log(fetchedStates);
         setStates(fetchedStates);
-        // setCities([]); // Clear cities when changing country
-        // formik.setFieldValue('state', ''); // Clear state selection
-        // formik.setFieldValue('city', ''); // Clear city selection
-        // setCities([]);
     };
+    // is used to change state change by user
     const handleStateChange = (event) => {
-        console.log(event);
+        // console.log(event);
         const selectedState = event.target.value;
-        console.log(selectedState);
+        // console.log(selectedState);
         formik.setFieldValue('state', selectedState);
 
         const countryCode = formik.values.country; // Get selected country code
-        console.log(countryCode);
+
+        // console.log(countryCode);
         // Fetch and set cities based on selected state
         const fetchedCities = City.getCitiesOfState(countryCode, selectedState).map((city) => ({
             label: city.name,
             value: city.name,
         }));
-        console.log(fetchedCities);
+        // console.log(fetchedCities);
         setCities(fetchedCities);
         // formik.setFieldValue('city', '');
     };
+    // is used to handle city changes by user
     const handleCityChange = (event) => {
         formik.setFieldValue('city', event.target.value);
     };
 
-
+    // yup is used for validation for inputs or controls
     const validationSchema = Yup.object().shape({
         name: Yup.string().required('Name is required')
             .matches(/^[a-zA-Z\s]*$/, 'Only letters and spaces are allowed')
@@ -128,6 +127,7 @@ export default function EditDetails() {
         ,
         // Add validation for other fields if needed
     });
+    // is used to check pincode 
     const handlePincodeKeyDown = (event) => {
         const isNumber = /^\d$/; // Regular expression to check for numbers
         const isAllowedKey = event.key === 'Backspace' || event.key === 'Delete';
@@ -136,7 +136,9 @@ export default function EditDetails() {
             event.preventDefault(); // Prevents typing non-numeric characters
         }
     };
+    // is used to navigate one componen to another component
     const navigate = useNavigate();
+    // is used to formik for form values 
     const formik = useFormik({
         initialValues: {
             name: rowData ? rowData.name : '',
@@ -151,11 +153,13 @@ export default function EditDetails() {
             // Initialize other fields with existing data if available
         },
         validationSchema,
+
         onSubmit: async (values) => {
-            console.log(values);
+
             setIsSubmitting(true);
             try {
                 console.log(values);
+                // to disply updated successfully toast message in top of the page
                 toast.success('Form updated successfully!', {
                     position: toast.POSITION.TOP_CENTER,
                     onClose: () => navigate('/gridtable')
@@ -174,99 +178,64 @@ export default function EditDetails() {
             }
         },
     });
+    // is used to file change 
     const handleFileChange = (event) => {
         formik.setFieldValue('file', event.currentTarget.files[0]);
     };
+
     return (
-        // <div>
-        //     <h2>Edit Hospital Details</h2>
-        //     {rowData && (
-        //         <div>
-        //             <p>ID: {rowData.id}</p>
-        //             <p>Name: {rowData.name}</p>
-        //             <p>Short Name: {rowData.shortname}</p>
-        //             {/* Render other details */}
-        //         </div>
-        //          <Grid item xs={12} xl={6}>
-        //          <FormControl fullWidth>
-        //            <TextField
-        //              label="Hospital Legal Name"
-        //              variant="outlined"
-        //              name="name"
-        //              fullWidth
-        //              value={formik.values.name}
-        //              onChange={formik.handleChange}
-        //              onBlur={formik.handleBlur}
-        //              error={formik.touched.name && Boolean(formik.errors.name)}
-        //              helperText={(formik.touched.name && formik.errors.name)}
-        //              inputProps={{
-        //                onKeyDown: (event) => {
-        //                  if (event.key.match(/[0-9]/)) {
-        //                    event.preventDefault();
-        //                  }
-        //                }
-        //              }}
-        //            />
-        //            {/* {formik.touched.name && formik.errors.name && (
-        //              <div style={{ color: 'red' }}>{formik.errors.name}</div>
-        //            )} */}
-        //          </FormControl>
-        //        </Grid>
-        //     )}
-        //     {/* Your edit form or components go here */}
-        // </div>
-        <Container>
+        <div className="p-5">
             <ToastContainer />
-            <h2>Edit Hospital Details</h2>
-            <form onSubmit={formik.handleSubmit}>
-                <Grid container spacing={2} m={1}>
-                    <Grid item xs={12} xl={6}>
-                        <FormControl fullWidth>
-                            <TextField
-                                id="name"
-                                name="name"
-                                label="Name"
-                                value={formik.values.name}
-                                onChange={formik.handleChange}
-                                error={formik.touched.name && Boolean(formik.errors.name)}
-                                helperText={formik.touched.name && formik.errors.name}
-                            /></FormControl>
-                    </Grid>
-                    <Grid item xs={12} xl={6}>
-                        <FormControl fullWidth>
-                            <TextField
-                                label="Hospital Short Name"
-                                variant="outlined"
-                                name="shortname"
-                                fullWidth
-                                value={formik.values.shortname}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.shortname && Boolean(formik.errors.shortname)}
-                                helperText={(formik.touched.shortname && formik.errors.shortname)}
-                                inputProps={{
-                                    onKeyDown: (event) => {
-                                        if (event.key.match(/[0-9]/)) {
-                                            event.preventDefault();
-                                        }
+            <div className="bg-white p-2">
+                <h2 className="text-2xl font-semibold text-center mb-4">Edit Hospital Details</h2>
+                <form onSubmit={formik.handleSubmit} className="grid grid-cols-1  gap-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                    {/* Hospital Legal Name - Darshan */}
+                    <div className="col-span-1">
+                        <TextField
+                            label="Hospital Legal Name"
+                            variant="outlined"
+                            name="name"
+                            fullWidth
+                            value={formik.values.name}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.name && Boolean(formik.errors.name)}
+                            helperText={(formik.touched.name && formik.errors.name)}
+                            inputProps={{
+                                onKeyDown: (event) => {
+                                    if (event.key.match(/[0-9]/)) {
+                                        event.preventDefault();
                                     }
-                                }}
-                            />
-                            {/* {formik.touched.shortname && formik.errors.shortname && (
-                <div style={{ color: 'red' }}>{formik.errors.shortname}</div>
-              )} */}
-                        </FormControl>
-                    </Grid>
-                    {/* Add other form fields using similar TextField components */}
-                    {/* File Upload */}
-                    <Grid item xs={12} xl={6}>
+                                }
+                            }}
+                        />
+                    </div>
+                    {/* Hospital Short Name - Darshan */}
+                    <div className="col-span-1">
+                        <TextField
+                            label="Hospital Short Name"
+                            variant="outlined"
+                            name="shortname"
+                            fullWidth
+                            value={formik.values.shortname}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.shortname && Boolean(formik.errors.shortname)}
+                            helperText={(formik.touched.shortname && formik.errors.shortname)}
+                            inputProps={{
+                                onKeyDown: (event) => {
+                                    if (event.key.match(/[0-9]/)) {
+                                        event.preventDefault();
+                                    }
+                                }
+                            }}
+                        />
+                    </div>
+                    {/* Hospital Logo - Darshan */}
+                    <div className="col-span-1">
                         <FormControl fullWidth>
-                            <Button
-                                variant="outlined"
-                                component="label"
-                                size='large'
-                                sx={{ pt: 2, pb: 1.5, textAlign: 'center' }}
-                                startIcon={<FileUploadOutlinedIcon />}
+                            <Button variant="outlined" component="label" size='medium' startIcon={<FileUploadOutlinedIcon />}
+                                sx={{ pt: 2, pb: 1.5, textAlign: 'center', color: 'solid rgb(196,196,196,1)', border: '1px solid rgb(196,196,196,1)' }}
                             >
                                 Upload Hospital Logo
                                 <input
@@ -277,55 +246,52 @@ export default function EditDetails() {
                                     onChange={handleFileChange}
                                 />
                             </Button>
-                            {formik.touched.file && formik.errors.file && (
-                                <div style={{ color: 'red' }}>{formik.errors.file}</div>
-                            )}
                         </FormControl>
-                    </Grid>
-                    {/* Email*/}
-                    <Grid item xs={12} xl={6}>
-                        <FormControl fullWidth>
-                            {/* <InputLabel htmlFor="email">Email</InputLabel> */}
-                            <TextField
-                                label="Email"
-                                id="email"
-                                name="email"
-                                fullWidth
-                                variant="outlined"
-                                value={formik.values.email}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.email && Boolean(formik.errors.email)}
-                                helperText={(formik.touched.email && formik.errors.email) || ' '}
-                            />
-                            {/* {formik.touched.email && formik.errors.email && (
-                <div style={{ color: 'red' }}>{formik.errors.email}</div>
-              )} */}
-                        </FormControl>
-                    </Grid>
-                    {/* Address*/}
-                    <Grid item xs={12}>
-                        <FormControl fullWidth variant="outlined" error={formik.touched.address && Boolean(formik.errors.address)}>
-                            {/* <InputLabel htmlFor="address">Address</InputLabel> */}
-                            <TextareaAutosize
-                                id="address"
-                                name="address"
-                                minRows={3} // Minimum rows to display
-                                maxRows={6} // Maximum rows before scrolling
-                                placeholder="Enter address..."
-                                value={formik.values.address}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                style={{ width: '100%', resize: 'vertical' }}
-                            // helperText={(formik.touched.address && formik.errors.address) || ' '}
-                            />
-                            {/* Error message for address input */}
-                            {formik.touched.address && formik.errors.address && (
-                                <div style={{ color: 'red' }}>{formik.errors.address}</div>
-                            )}
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} xl={6}>
+                    </div>
+                    {/* Hospital Email - Darshan */}
+                    <div className="col-span-1">
+                        <TextField
+                            label="Email"
+                            variant="outlined"
+                            name="email"
+                            fullWidth
+                            value={formik.values.email}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.email && Boolean(formik.errors.email)}
+                            helperText={(formik.touched.email && formik.errors.email)}
+                            inputProps={{
+                                onKeyDown: (event) => {
+                                    if (event.key.match(/[0-9]/)) {
+                                        event.preventDefault();
+                                    }
+                                }
+                            }}
+                        />
+                    </div>
+                    {/* Hospital Address - Darshan */}
+                    <div className="col-span-1">
+                        <TextField
+                            label="Address"
+                            variant="outlined"
+                            name="address"
+                            fullWidth
+                            value={formik.values.address}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.address && Boolean(formik.errors.address)}
+                            helperText={(formik.touched.address && formik.errors.address)}
+                            inputProps={{
+                                onKeyDown: (event) => {
+                                    if (event.key.match(/[0-9]/)) {
+                                        event.preventDefault();
+                                    }
+                                }
+                            }}
+                        />
+                    </div>
+                    {/* Hospital Country - Darshan */}
+                    <div className="col-span-1">
                         <FormControl fullWidth variant="outlined" error={formik.touched.country && Boolean(formik.errors.country)}>
                             <InputLabel id="country-label">Country</InputLabel>
                             <Select
@@ -340,13 +306,10 @@ export default function EditDetails() {
                                     </MenuItem>
                                 ))}
                             </Select>
-                            {/* <FormHelperText>Error</FormHelperText> */}
-                            {(formik.touched.country && formik.errors.country) && (
-                                <div style={{ color: 'red' }}>{formik.errors.country}</div>
-                            )}
                         </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={4} xl={6}>
+                    </div>
+                    {/* Hospital State - Darshan */}
+                    <div className="col-span-1">
                         <FormControl fullWidth variant="outlined" error={formik.touched.state && Boolean(formik.errors.state)}>
                             <InputLabel id="state-label">State</InputLabel>
                             <Select
@@ -361,12 +324,10 @@ export default function EditDetails() {
                                     </MenuItem>
                                 ))}
                             </Select>
-                            {(formik.touched.state && formik.errors.state) && (
-                                <div style={{ color: 'red' }}>{formik.errors.state}</div>
-                            )}
                         </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={4} xl={6}>
+                    </div>
+                    {/* Hospital City - Darshan */}
+                    <div className="col-span-1">
                         <FormControl fullWidth variant="outlined" error={formik.touched.city && Boolean(formik.errors.city)}>
                             <InputLabel id="city-label">City</InputLabel>
                             <Select
@@ -381,40 +342,43 @@ export default function EditDetails() {
                                     </MenuItem>
                                 ))}
                             </Select>
-                            {(formik.touched.city && formik.errors.city) && (
-                                <div style={{ color: 'red' }}>{formik.errors.city}</div>
-                            )}
                         </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <FormControl fullWidth variant="outlined">
-                            <TextField
-                                fullWidth
-                                variant="outlined"
-                                label="Pincode"
-                                name="pincode"
-                                value={formik.values.pincode}
-                                onChange={formik.handleChange}
-                                onKeyDown={handlePincodeKeyDown}
-                                onKeyPress={(e) => {
-                                    // Prevent typing after reaching 6 characters
-                                    if (formik.values.pincode.length >= 6) {
-                                        e.preventDefault();
-                                    }
-                                }}
-                                error={formik.touched.pincode && Boolean(formik.errors.pincode)}
-                            // helperText={(formik.touched.pincode && formik.errors.pincode) || ' '}
-                            />
-                            {(formik.touched.pincode && formik.errors.pincode) && (
-                                <div style={{ color: 'red' }}>{formik.errors.pincode}</div>
-                            )}
-                        </FormControl>
-                    </Grid>
-                    <Button type="submit" variant="contained" disabled={isSubmitting}>
-                        Update
-                    </Button>
-                </Grid>
-            </form>
-        </Container>
-    );
+                    </div>
+                    {/* Hospital Pincode - Darshan */}
+                    <div className="col-span-1">
+                        <TextField
+                            label="Pincode"
+                            variant="outlined"
+                            name="pincode"
+                            fullWidth
+                            value={formik.values.pincode}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            onKeyDown={handlePincodeKeyDown}
+                            onKeyPress={(e) => {
+                                // Prevent typing after reaching 6 characters
+                                if (formik.values.pincode.length >= 6) {
+                                    e.preventDefault();
+                                }
+                            }}
+                            error={formik.touched.pincode && Boolean(formik.errors.pincode)}
+                            helperText={(formik.touched.pincode && formik.errors.pincode)}
+                        />
+                    </div>
+                    {/* Update Button - Darshan */}
+                    <div className="sm:col-span-2 lg:col-span-3 xl:col-span-4 2xl:col-span-4 text-center ">
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            type='submit'
+                            disabled={isSubmitting}
+                        >
+                            Update
+                        </Button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    )
 }

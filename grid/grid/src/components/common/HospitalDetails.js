@@ -1,14 +1,17 @@
+// import react formik yup axios country-state-city material react-toastify react-router-dom
+
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { Country, State, City } from 'country-state-city';
-import { Grid, Link, Button, Select, Typography, MenuItem, InputLabel, TextareaAutosize, TextField, Container, FormControl } from '@mui/material';
+import { Button, Select, MenuItem, InputLabel, TextField, FormControl } from '@mui/material';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
 
+// yup for validation
 const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required')
         .matches(/^[a-zA-Z\s]*$/, 'Only letters and spaces are allowed')
@@ -40,10 +43,12 @@ const validationSchema = Yup.object().shape({
     file: Yup.mixed().required('File upload is required')
     ,
 });
-export default function HospitalDetails(props) {
+export default function HospitalDetails() {
     const [countries, setCountries] = useState([]);
     const [states, setStates] = useState([]);
     const [cities, setCities] = useState([]);
+
+    // fetch countries list
     useEffect(() => {
         const countriesData = Country.getAllCountries().map((country) => ({
             label: country.name,
@@ -51,7 +56,7 @@ export default function HospitalDetails(props) {
         }));
         setCountries(countriesData);
     }, []);
-
+    // on change country list by user
     const handleCountryChange = (event) => {
         console.log(event);
         const selectedCountry = event.target.value;
@@ -66,6 +71,7 @@ export default function HospitalDetails(props) {
         console.log(fetchedStates);
         setStates(fetchedStates);
     };
+    // on change state by user 
     const handleStateChange = (event) => {
         console.log(event);
         const selectedState = event.target.value;
@@ -81,9 +87,11 @@ export default function HospitalDetails(props) {
         console.log(fetchedCities);
         setCities(fetchedCities);
     };
+    // on change city change by user
     const handleCityChange = (event) => {
         formik.setFieldValue('city', event.target.value);
     };
+    // pincode include only backspace and delete button
     const handlePincodeKeyDown = (event) => {
         const isNumber = /^\d$/; // Regular expression to check for numbers
         const isAllowedKey = event.key === 'Backspace' || event.key === 'Delete';
@@ -92,11 +100,14 @@ export default function HospitalDetails(props) {
             event.preventDefault(); // Prevents typing non-numeric characters
         }
     };
-
+    // file upload 
     const handleFileChange = (event) => {
         formik.setFieldValue('file', event.currentTarget.files[0]);
     };
+    // navigate for change file 
     const navigate = useNavigate();
+
+    // form to control form values
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -111,7 +122,8 @@ export default function HospitalDetails(props) {
         },
         validationSchema: validationSchema,
         onSubmit: async (values, { resetForm }) => {
-            console.log('Form submitted:', values);
+
+
             try {
                 console.log('Form submitted:', values);
                 toast.success('Form submitted successfully!', {
@@ -119,15 +131,15 @@ export default function HospitalDetails(props) {
                 });
                 const formData = new FormData();
                 formData.append('file', values.file); // Append the file to FormData
-                // delete values.file; // Remove the file from values object
-                console.log(formData);
+                // Remove the file from values object
+                // console.log(formData);
                 // // Append other form fields to FormData
                 for (const key in values) {
                     if (key !== 'file') {
                         formData.append(key, values[key]);
                     }
                 }
-                console.log(formData);
+                // console.log(formData);
                 // console.log(values);
                 const response = await axios.post('http://localhost:5000/hospitaldetails', formData, {
                     headers: {
@@ -135,7 +147,7 @@ export default function HospitalDetails(props) {
                     },
                 });
                 console.log(response.data);
-                resetForm();
+                resetForm();// result form
                 navigate('/gridtable'); // If successful, log the response from the server
             } catch (error) {
                 console.error('Error submitting form:', error);
@@ -144,9 +156,11 @@ export default function HospitalDetails(props) {
     })
     return (
         <div className="p-5">
+            <ToastContainer />
             <div className="bg-white p-2">
                 <h2 className="text-2xl font-semibold text-center mb-4">Hospital Details</h2>
                 <form onSubmit={formik.handleSubmit} className="grid grid-cols-1  gap-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                    {/* Hospital Legal Name - Darshan */}
                     <div className="col-span-1">
                         <TextField
                             label="Hospital Legal Name"
@@ -167,6 +181,7 @@ export default function HospitalDetails(props) {
                             }}
                         />
                     </div>
+                    {/* Hospital Short Name - Darshan */}
                     <div className="col-span-1">
                         <TextField
                             label="Hospital Short Name"
@@ -187,10 +202,11 @@ export default function HospitalDetails(props) {
                             }}
                         />
                     </div>
+                    {/* Hospital Logo - Darshan */}
                     <div className="col-span-1">
                         <FormControl fullWidth>
                             <Button variant="outlined" component="label" size='medium' startIcon={<FileUploadOutlinedIcon />}
-                                sx={{pt:2, pb:1.5, textAlign: 'center', color: 'solid rgb(196,196,196,1)', border: '1px solid rgb(196,196,196,1)' }}
+                                sx={{ pt: 2, pb: 1.5, textAlign: 'center', color: 'solid rgb(196,196,196,1)', border: '1px solid rgb(196,196,196,1)' }}
                             >
                                 Upload Hospital Logo
                                 <input
@@ -203,6 +219,7 @@ export default function HospitalDetails(props) {
                             </Button>
                         </FormControl>
                     </div>
+                    {/* Hospital Email - Darshan */}
                     <div className="col-span-1">
                         <TextField
                             label="Email"
@@ -223,13 +240,14 @@ export default function HospitalDetails(props) {
                             }}
                         />
                     </div>
+                    {/* Hospital Address - Darshan */}
                     <div className="col-span-1">
                         <TextField
                             label="Address"
                             variant="outlined"
                             name="address"
                             fullWidth
-                            value={formik.values.name}
+                            value={formik.values.address}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             error={formik.touched.address && Boolean(formik.errors.address)}
@@ -243,6 +261,7 @@ export default function HospitalDetails(props) {
                             }}
                         />
                     </div>
+                    {/* Hospital Country - Darshan */}
                     <div className="col-span-1">
                         <FormControl fullWidth variant="outlined" error={formik.touched.country && Boolean(formik.errors.country)}>
                             <InputLabel id="country-label">Country</InputLabel>
@@ -260,6 +279,7 @@ export default function HospitalDetails(props) {
                             </Select>
                         </FormControl>
                     </div>
+                    {/* Hospital State - Darshan */}
                     <div className="col-span-1">
                         <FormControl fullWidth variant="outlined" error={formik.touched.state && Boolean(formik.errors.state)}>
                             <InputLabel id="state-label">State</InputLabel>
@@ -277,6 +297,7 @@ export default function HospitalDetails(props) {
                             </Select>
                         </FormControl>
                     </div>
+                    {/* Hospital City - Darshan */}
                     <div className="col-span-1">
                         <FormControl fullWidth variant="outlined" error={formik.touched.city && Boolean(formik.errors.city)}>
                             <InputLabel id="city-label">City</InputLabel>
@@ -294,6 +315,7 @@ export default function HospitalDetails(props) {
                             </Select>
                         </FormControl>
                     </div>
+                    {/* Hospital Pincode - Darshan */}
                     <div className="col-span-1">
                         <TextField
                             label="Pincode"
@@ -314,6 +336,7 @@ export default function HospitalDetails(props) {
                             helperText={(formik.touched.pincode && formik.errors.pincode)}
                         />
                     </div>
+                    {/* Submit Button - Darshan */}
                     <div className="sm:col-span-2 lg:col-span-3 xl:col-span-4 2xl:col-span-4 text-center ">
                         <Button
                             variant="contained"
