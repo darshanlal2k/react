@@ -36,8 +36,6 @@ export default function Fetchdata() {
         } catch (error) {
             // Display error message to the user if needed
             if (error.response) {
-                // The request was made and the server responded with a status code
-                // Other than 2xx (successful responses)
                 console.error('Error:', error.response.status, error.response.data);
             } else if (error.request) {
                 // The request was made but no response was received
