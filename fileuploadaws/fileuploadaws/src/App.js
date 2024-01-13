@@ -5,7 +5,7 @@ import Fileupload from './components/common/Fileupload';
 function App() {
   return (
     <div >
-      <p>hello react with upload</p>
+     
       <Fileupload />
       
     </div>
