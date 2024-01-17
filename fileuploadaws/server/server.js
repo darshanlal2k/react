@@ -3,7 +3,7 @@ const multer = require('multer');
 
 
 const app = express();
-const port = 3000;
+const port = 5000;
 
 // Set up storage for uploaded files using Multer
 const storage = multer.diskStorage({
