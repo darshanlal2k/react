@@ -1,10 +1,25 @@
 
 import React from 'react';
 import { useFormik } from 'formik';
+
+import './Fileupload.css';
 import * as yup from 'yup';
-import { Input, Typography, Button } from '@mui/material';
+import { Input, Typography, Image, Button, Table, TableHead, TableRow, TableCell, TableBody, TextField, AppBar, Toolbar } from '@mui/material';
+
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import axios from 'axios';
+import Sidebar from '../layout/Sidebar';
+import Navigationbar from '../layout/Navigationbar';
+import Tableview from '../layout/Tableview';
+import SearchIcon from '@mui/icons-material/Search';
+
+import grouplogo from './images/userslogo.png';
+import hospitallogo from './images/hospitalimg.png';
+import hospitallogos from './images/hospilogo.png';
+import addhospitallogo from './images/addhospitalbtn.png';
+import sihalogo from './images/sihalogos.png';
+import Header from '../layout/Header';
+
 
 // React component for file upload
 export default function Fileupload() {
@@ -51,48 +66,114 @@ export default function Fileupload() {
     });
     // JSX structure for the file upload form
     return (
-        
-        <div className="min-h-screen flex items-center justify-center">
-
-            <form
-                onSubmit={formik.handleSubmit}
-                className="max-w-md w-full p-6 bg-white text-center rounded-md shadow-lg"
-            >
-                <div className='mb-3'>
-                    <h3>File Upload</h3>
+        <div className=''>
+            <Header/>
+            <div className='flex'>
+                {/* <div className='fixed'> */}
+                <div className='w-1/5 bluecolor' >
+                    <Sidebar />
                 </div>
-                <div className="mb-6 ">
-                    <Button
-                        variant="outlined"
-                        size="medium"
-                        startIcon={<FileUploadOutlinedIcon />}
-                        className="w-full"
-                    >
-                        <Input
-                            type="file"
-                            name="file"
-                            hidden
-                            onChange={(event) => {
-                                formik.setFieldValue('file', event.currentTarget.files[0]);
-                            }}
-                        />
-                    </Button>
+                <div className='w-4/5'>
+                    <div className='p-3 text-[#0BC5EA]'>
+                        <Navigationbar />
+                        <div className='text-2xl font-bold'>
+                            Configurations
+                        </div>
+                    </div>
+                    <div className='sectionBgclr '>
+                        <div className='flex p-4'>
+                            <div className='w-3/5 '>
+                                <div className='flex'>
+                                    <div className='w-1/2'>
+                                        <img src={hospitallogo} alt='hospital_logo' />
+                                    </div>
+                                    <div className='w-1/2 text-[#0BC5EA]'>
+                                        <img src={grouplogo} alt='users_logo' />
+                                        Users
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='w-2/5 '>
+                                <div className='flex justify-between'>
+                                    <div className='w-1/2 p-4'>
+                                        <div className="flex ">
+                                            <SearchIcon />
+                                            <TextField
+                                                label="Search"
+                                                variant="outlined"
+                                                size='small'
+                                            // onChange={handleSearch}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className='w-1/2'>
+                                        {/* <Button variant='contained' sx={{
+                                            backgroundColor: '#0BC5EA',
+                                        }} startIcon={
+                                            <img src={hospitallogos} />
+                                        }>Add Hospital</Button> */}
+                                        <img src={addhospitallogo} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='p-4'>
+                            <Tableview />
+                        </div>
+                        {/* <div className="min-h-screen flex items-center justify-center">
+                            <form
+                                onSubmit={formik.handleSubmit}
+                                className="max-w-md w-full p-6 bg-white text-center rounded-md shadow-lg"
+                            >
+                                <div className='mb-3'>
+                                    <h3>File Upload</h3>
+                                </div>
+                                <div className="mb-6 ">
+                                    <Button
+                                        variant="outlined"
+                                        size="medium"
+                                        startIcon={<FileUploadOutlinedIcon />}
+                                        className="w-full"
+                                    >
+                                        <Input
+                                            type="file"
+                                            name="file"
+                                            hidden
+                                            onChange={(event) => {
+                                                formik.setFieldValue('file', event.currentTarget.files[0]);
+                                            }}
+                                        />
+                                    </Button>
+                                </div>
+
+                                {formik.errors.file && formik.touched.file && (
+                                    <Typography color="error">{formik.errors.file}</Typography>
+                                )}
+
+                                {formik.isSubmitting && <Typography>Uploading...</Typography>}
+
+                                <Button type="submit" variant="contained" color="primary" disabled={formik.isSubmitting}>
+                                    Upload
+                                </Button>
+
+                                {formik.errors.file && !formik.isSubmitting && (
+                                    <Typography color="error">{formik.errors.file}</Typography>
+                                )}
+                            </form>
+                        </div> */}
+                    </div>
                 </div>
+                {/* </div> */}
 
-                {formik.errors.file && formik.touched.file && (
-                    <Typography color="error">{formik.errors.file}</Typography>
-                )}
-
-                {formik.isSubmitting && <Typography>Uploading...</Typography>}
-               
-                    <Button type="submit" variant="contained" color="primary" disabled={formik.isSubmitting}>
-                        Upload
-                    </Button>
-           
-                {formik.errors.file && !formik.isSubmitting && (
-                    <Typography color="error">{formik.errors.file}</Typography>
-                )}
-            </form>
+            </div>
+            {/* <div>
+                <AppBar >
+                    <Toolbar>
+                        Home
+                    </Toolbar>
+                </AppBar>
+            </div> */}
         </div>
     )
 }
