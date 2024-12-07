@@ -25,7 +25,7 @@ export default function GridTable() {
     // useEffect -> our component needs to do something after render
     useEffect(() => {
         fetchData();
-        
+
         // used to fetch and sync data or reload 
         const fetchAndSyncData = async () => {
             if (isAutoSyncOn) {
@@ -59,10 +59,13 @@ export default function GridTable() {
         catch (error) {
             console.error('Error deleting:', error);
         }
+
     }
+   
+
     return (
         <Container maxWidth="xl" className='p-5'>
-             {/* Add Hospital button  - Darshan */}
+            {/* Add Hospital button  - Darshan */}
             <Box className="text-center m-5">
                 <Link to="/hospitaldetails" style={{ textDecoration: 'none' }}>
                     <Button
@@ -126,12 +129,12 @@ export default function GridTable() {
                     </TableBody>
                 </Table>
             </Box>
-            {/* Table only show in sm mobile only  - Darshan */}
+            {/* it will only show in sm mobile only  - Darshan */}
             <Box className='md:hidden'>
                 <Grid container >
                     <Grid item xs={12} md={12}>
                         {data.map((row) => (
-                            <Paper key={row.id} variant="outlined" sx={{ p: 2, mb: 2 }}>
+                            <Paper key={row.id} fullwidth variant="outlined" sx={{ p: 2, mb: 2 }}>
                                 <div className='flex bg-sky-300 text-center'>
                                     <strong className='w-1/2'>ID</strong>
                                     <span className='w-1/2'>{row.id}</span>

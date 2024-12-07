@@ -122,8 +122,6 @@ export default function HospitalDetails() {
         },
         validationSchema: validationSchema,
         onSubmit: async (values, { resetForm }) => {
-
-
             try {
                 console.log('Form submitted:', values);
                 toast.success('Form submitted successfully!', {

@@ -1,10 +1,12 @@
 
 import React from 'react';
 import { useFormik } from 'formik';
-
+// import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from '@mui/material/InputAdornment';
+// import SearchIcon from "@material-ui/icons/Search";
 import './Fileupload.css';
 import * as yup from 'yup';
-import { Input, Typography, Image, Button, Table, TableHead, TableRow, TableCell, TableBody, TextField, AppBar, Toolbar } from '@mui/material';
+import { Input, Typography, Image, Button, Table, TableHead, TableRow, TableCell, TableBody, TextField, AppBar, Toolbar, Drawer, Box } from '@mui/material';
 
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import axios from 'axios';
@@ -67,9 +69,7 @@ export default function Fileupload() {
     // JSX structure for the file upload form
     return (
         <div className=''>
-            <Header/>
             <div className='flex'>
-                {/* <div className='fixed'> */}
                 <div className='w-1/5 bluecolor' >
                     <Sidebar />
                 </div>
@@ -82,7 +82,7 @@ export default function Fileupload() {
                     </div>
                     <div className='sectionBgclr '>
                         <div className='flex p-4'>
-                            <div className='w-3/5 '>
+                            <div className='w-3/6 '>
                                 <div className='flex'>
                                     <div className='w-1/2'>
                                         <img src={hospitallogo} alt='hospital_logo' />
@@ -93,26 +93,28 @@ export default function Fileupload() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='w-2/5 '>
+                            <div className='w-3/6 '>
                                 <div className='flex justify-between'>
-                                    <div className='w-1/2 p-4'>
-                                        <div className="flex ">
-                                            <SearchIcon />
-                                            <TextField
-                                                label="Search"
-                                                variant="outlined"
-                                                size='small'
-                                            // onChange={handleSearch}
-                                            />
-                                        </div>
+                                    <div className='w-3/4 p-4'>
+                                        <TextField
+                                            label="search"
+                                            size='small'
+                                            fullWidth
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <InputAdornment>
+                                                        {/* <IconButton> */}
+                                                        <SearchIcon />
+                                                        {/* </IconButton> */}
+                                                    </InputAdornment>
+                                                )
+                                            }}
+                                        />
                                     </div>
-                                    <div className='w-1/2'>
-                                        {/* <Button variant='contained' sx={{
-                                            backgroundColor: '#0BC5EA',
-                                        }} startIcon={
-                                            <img src={hospitallogos} />
-                                        }>Add Hospital</Button> */}
-                                        <img src={addhospitallogo} />
+                                    <div className='w-1/4'>
+                                        <div className='mt-3'>
+                                            <img src={addhospitallogo} />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -175,6 +177,24 @@ export default function Fileupload() {
                 </AppBar>
             </div> */}
         </div>
-    )
+        // <Box className='flex'>
+        //     <Header />
+        //     <Sidebar />
+        //     <Box
+        //         component="main"
+        //         sx={{
+        //             flexGrow: 1,
+        //             p: 3,
+        //             width: 240,
+        //             background: "#efecec",
+        //             position: "fixed",
+        //             height: "100%",
+        //             right: "0",
+        //         }}
+        //     >
+        //         <div className="mt-16   w-full overflow-scroll mb-5 h-full"></div>
+        //     </Box>
+        // </Box >
+    );
 }
 

@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function Regform() {
     const { register, handleSubmit, formState: { errors }, reset } = useForm(
-        { mode: 'onChange', }
+        { mode: 'onBlur' }
     );
     const [data, setData] = useState([]);
 
@@ -19,7 +19,7 @@ export default function Regform() {
     const handleCountryChange = (event) => {
         setSelectedCountry(event.target.value);
     };
-// to send form data to backend 
+    // to send form data to backend 
     const onSubmit = async (formData) => {
         console.log(formData);
         toast.success('Form submitted successfully!', {
@@ -83,7 +83,7 @@ export default function Regform() {
                             },
                         })}
                             margin="normal" placeholder="name" type="text"
-                            variant="outlined" label="name" onBlur={handleSubmit()}
+                            // variant="outlined" label="name" onBlur={handleSubmit()}
                         />
 
                         {errors?.name && <p style={{ color: 'red' }}>{errors.name.message}</p>}

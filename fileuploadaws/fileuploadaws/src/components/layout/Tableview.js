@@ -15,7 +15,7 @@ import { Input, Typography, Button, Table, TableHead, TableRow, TableCell, Table
 //     },
 // });
 
-
+import editlogo from '../common/images/Vectoredit.png';
 
 export default function Tableview() {
     // const classes = useStyles();
@@ -39,28 +39,95 @@ export default function Tableview() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {/* {rows.map((row, index) => (
-                        <TableRow key={row.id} className={index % 2 === 0 ? classes.evenRow : classes.oddRow}>
-                            <TableCell>{row.id}</TableCell>
-                            <TableCell>{row.name}</TableCell>
-                            <TableCell>{row.age}</TableCell>
-                        </TableRow>
-                        
-                    ))} */}
                     <TableRow >
                         <TableCell>1</TableCell>
                         <TableCell>alex</TableCell>
                         <TableCell>24</TableCell>
+                        <TableCell>Frank</TableCell>
+                        <TableCell>Active</TableCell>
+                        <TableCell>
+                            <img src={editlogo} />
+                        </TableCell>
                     </TableRow>
                     <TableRow >
                         <TableCell>2</TableCell>
                         <TableCell>Darshan Lal</TableCell>
                         <TableCell>25</TableCell>
+                        <TableCell>Martin Frank</TableCell>
+                        <TableCell>Active</TableCell>
+                        <TableCell>
+                            <img src={editlogo} />
+                        </TableCell>
                     </TableRow>
                     <TableRow >
                         <TableCell>3</TableCell>
                         <TableCell>alex pandian</TableCell>
                         <TableCell>26 </TableCell>
+                        <TableCell>Frank</TableCell>
+                        <TableCell>Active</TableCell>
+                        <TableCell>
+                            <img src={editlogo} />
+                        </TableCell>
+                    </TableRow>
+                    <TableRow >
+                        <TableCell>1</TableCell>
+                        <TableCell>alex</TableCell>
+                        <TableCell>24</TableCell>
+                        <TableCell>Frank</TableCell>
+                        <TableCell>Active</TableCell>
+                        <TableCell>
+                            <img src={editlogo} />
+                        </TableCell>
+                    </TableRow>
+                    <TableRow >
+                        <TableCell>2</TableCell>
+                        <TableCell>Darshan Lal</TableCell>
+                        <TableCell>25</TableCell>
+                        <TableCell>Martin Frank</TableCell>
+                        <TableCell>Active</TableCell>
+                        <TableCell>
+                            <img src={editlogo} />
+                        </TableCell>
+                    </TableRow>
+                    <TableRow >
+                        <TableCell>3</TableCell>
+                        <TableCell>alex pandian</TableCell>
+                        <TableCell>26 </TableCell>
+                        <TableCell>Frank</TableCell>
+                        <TableCell>Active</TableCell>
+                        <TableCell>
+                            <img src={editlogo} />
+                        </TableCell>
+                    </TableRow>
+                    {/* <TableRow >
+                        <TableCell>1</TableCell>
+                        <TableCell>alex</TableCell>
+                        <TableCell>24</TableCell>
+                        <TableCell>Frank</TableCell>
+                        <TableCell>Active</TableCell>
+                        <TableCell>
+                            <img src={editlogo} />
+                        </TableCell>
+                    </TableRow> */}
+                    <TableRow >
+                        <TableCell>2</TableCell>
+                        <TableCell>Darshan Lal</TableCell>
+                        <TableCell>25</TableCell>
+                        <TableCell>Martin Frank</TableCell>
+                        <TableCell>Active</TableCell>
+                        <TableCell>
+                            <img src={editlogo} />
+                        </TableCell>
+                    </TableRow>
+                    <TableRow >
+                        <TableCell>3</TableCell>
+                        <TableCell>alex pandian</TableCell>
+                        <TableCell>26 </TableCell>
+                        <TableCell>Frank</TableCell>
+                        <TableCell>Active</TableCell>
+                        <TableCell>
+                            <img src={editlogo} />
+                        </TableCell>
                     </TableRow>
                 </TableBody>
             </Table>
